@@ -1,0 +1,37 @@
+{
+  "services": [
+    {
+      "name": "stirling-pdf",
+      "image": "stirlingtools/stirling-pdf:2.1.4",
+      "isMain": true,
+      "internalPort": 8080,
+      "environment": [
+        {
+          "key": "DOCKER_ENABLE_SECURITY",
+          "value": "${STIRLING_PDF_DOCKER_ENABLE_SECURITY-false}"
+        }
+      ],
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/trainingData",
+          "containerPath": "/usr/share/tesseract-ocr/5/tessdata"
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/extraConfigs",
+          "containerPath": "/configs"
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/customFiles",
+          "containerPath": "/customFiles/"
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/logs",
+          "containerPath": "/logs/"
+        }
+      ],
+      "privileged": true
+    }
+  ],
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/v2/dynamic-compose.json"
+}

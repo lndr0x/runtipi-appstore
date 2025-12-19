@@ -1,0 +1,129 @@
+{
+  "services": [
+    {
+      "name": "immich",
+      "image": "ghcr.io/immich-app/immich-server:v2.4.0",
+      "isMain": true,
+      "internalPort": 2283,
+      "environment": [
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "DB_HOSTNAME",
+          "value": "immich-db"
+        },
+        {
+          "key": "DB_USERNAME",
+          "value": "tipi"
+        },
+        {
+          "key": "DB_PASSWORD",
+          "value": "${DB_PASSWORD}"
+        },
+        {
+          "key": "ENABLE_MAPBOX",
+          "value": "false"
+        },
+        {
+          "key": "DB_DATABASE_NAME",
+          "value": "immich"
+        },
+        {
+          "key": "REDIS_HOSTNAME",
+          "value": "immich-redis"
+        },
+        {
+          "key": "JWT_SECRET",
+          "value": "${JWT_SECRET}"
+        }
+      ],
+      "dependsOn": ["immich-redis", "immich-db"],
+      "volumes": [
+        {
+          "hostPath": "${ROOT_FOLDER_HOST}/media/data/images/immich",
+          "containerPath": "/usr/src/app/upload"
+        }
+      ]
+    },
+    {
+      "name": "immich-machine-learning",
+      "image": "ghcr.io/immich-app/immich-machine-learning:v2.4.0",
+      "environment": [
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "DB_HOSTNAME",
+          "value": "immich-db"
+        },
+        {
+          "key": "DB_USERNAME",
+          "value": "tipi"
+        },
+        {
+          "key": "DB_PASSWORD",
+          "value": "${DB_PASSWORD}"
+        },
+        {
+          "key": "DB_NAME",
+          "value": "immich"
+        },
+        {
+          "key": "DB_DATABASE_NAME",
+          "value": "immich"
+        }
+      ],
+      "dependsOn": ["immich-db"],
+      "volumes": [
+        {
+          "hostPath": "${ROOT_FOLDER_HOST}/media/data/images/immich",
+          "containerPath": "/usr/src/app/upload"
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/immich-ml-cache",
+          "containerPath": "/cache"
+        }
+      ]
+    },
+    {
+      "name": "immich-redis",
+      "image": "redis:6.2",
+      "healthCheck": {
+        "test": "redis-cli ping || exit 1"
+      }
+    },
+    {
+      "name": "immich-db",
+      "image": "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0",
+      "environment": [
+        {
+          "key": "POSTGRES_PASSWORD",
+          "value": "${DB_PASSWORD}"
+        },
+        {
+          "key": "POSTGRES_USER",
+          "value": "tipi"
+        },
+        {
+          "key": "POSTGRES_DB",
+          "value": "immich"
+        },
+        {
+          "key": "PG_DATA",
+          "value": "/var/lib/postgresql/data"
+        }
+      ],
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/db",
+          "containerPath": "/var/lib/postgresql/data"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/v2/dynamic-compose.json"
+}

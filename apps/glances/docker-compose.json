@@ -1,0 +1,30 @@
+{
+  "services": [
+    {
+      "name": "glances",
+      "image": "nicolargo/glances:4.3.0.8-full",
+      "isMain": true,
+      "internalPort": 61208,
+      "pid": "host",
+      "environment": [
+        {
+          "key": "TZ",
+          "value": "${TZ}"
+        },
+        {
+          "key": "GLANCES_OPT",
+          "value": "-w"
+        }
+      ],
+      "volumes": [
+        {
+          "hostPath": "/var/run/docker.sock",
+          "containerPath": "/var/run/docker.sock",
+          "readOnly": true
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/v2/dynamic-compose.json"
+}

@@ -1,0 +1,34 @@
+{
+  "services": [
+    {
+      "name": "pairdrop",
+      "image": "lscr.io/linuxserver/pairdrop:1.11.2",
+      "isMain": true,
+      "internalPort": 3000,
+      "environment": [
+        {
+          "key": "PUID",
+          "value": "1000"
+        },
+        {
+          "key": "PGID",
+          "value": "1000"
+        },
+        {
+          "key": "TZ",
+          "value": "${TZ}"
+        },
+        {
+          "key": "RATE_LIMIT",
+          "value": "false"
+        },
+        {
+          "key": "WS_FALLBACK",
+          "value": "false"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/v2/dynamic-compose.json"
+}
