@@ -47,7 +47,10 @@
           "value": "${APP_PROTOCOL:-http}"
         }
       ],
-      "dependsOn": ["db-nextcloud", "redis-nextcloud"],
+      "dependsOn": [
+        "db-nextcloud",
+        "redis-nextcloud"
+      ],
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/nextcloud",
@@ -72,6 +75,12 @@
           "value": "nextcloud"
         }
       ],
+      "healthCheck": {
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5,
+        "test": "pg_isready -U tipi -d nextcloud"
+      },
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/db",
@@ -93,7 +102,10 @@
     {
       "name": "cron",
       "image": "nextcloud:25.0.13-apache",
-      "dependsOn": ["db-nextcloud", "redis-nextcloud"],
+      "dependsOn": [
+        "db-nextcloud",
+        "redis-nextcloud"
+      ],
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/nextcloud",
