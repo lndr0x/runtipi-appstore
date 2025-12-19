@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "nextcloud",
-      "image": "nextcloud:26.0.13-apache",
+      "image": "nextcloud:32.0.3-apache",
       "isMain": true,
       "internalPort": 80,
       "environment": [
@@ -91,7 +91,6 @@
     {
       "name": "redis-nextcloud",
       "image": "redis:6.2.6",
-      "user": "1000:1000",
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/redis",
@@ -101,7 +100,7 @@
     },
     {
       "name": "cron",
-      "image": "nextcloud:25.0.13-apache",
+      "image": "nextcloud:32.0.3-apache",
       "dependsOn": [
         "db-nextcloud",
         "redis-nextcloud"

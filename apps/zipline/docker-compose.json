@@ -4,7 +4,7 @@
       "name": "zipline",
       "image": "ghcr.io/diced/zipline:3.7.13",
       "isMain": true,
-      "internalPort": "3000",
+      "internalPort": 3000,
       "environment": [
         {
           "key": "CORE_RETURN_HTTPS",
